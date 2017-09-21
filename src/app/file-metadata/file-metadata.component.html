@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-sm-6">
+    <div class="form-group row">
+      <label for="title" class="col-sm-3 col-form-label">Titulek</label>
+      <div class="col-sm-9">
+        <input type="text" [(ngModel)]="baseSelection.title" class="form-control" id="title" placeholder="Kratky popis">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="description" class="col-sm-3 col-form-label">Popis</label>
+      <div class="col-sm-9">
+        <input type="text" [(ngModel)]="baseSelection.description" class="form-control" id="description" placeholder="Popis">
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-sm-6">
+    <div class="form-group row">
+      <label for="category" class="col-sm-4 col-form-label">Kategorie</label>
+      <select [(ngModel)]="baseSelection.selectedCategory" id="category" class="col-sm-8 form-control">
+        <option value="0">--- Vyber kategorii ---</option>
+        <option *ngFor="let category of categories" [ngValue]="category.id">{{category.value}}</option>
+      </select>
+    </div>
+    <div class="form-group row">
+      <label for="source" class="col-sm-4 col-form-label">Zdroj</label>
+      <select [(ngModel)]="baseSelection.selectedSource" id="source" class="col-sm-8 form-control">
+        <option value="0">--- Vyber zdroj ---</option>
+        <option *ngFor="let source of sources" [ngValue]="source.id">{{source.value}}</option>
+      </select>
+    </div>
+  </div>
+</div>

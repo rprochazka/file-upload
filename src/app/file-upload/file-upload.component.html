@@ -1,0 +1,36 @@
+<div class="container">
+  <form action="">
+
+    <div class="card">
+      <div class="card-header">
+        Hromadne nastaveni
+      </div>
+      <div class="card-block">
+        <app-file-metadata [categories]="categories" [sources]="sources" [(baseSelection)]="baseMetadata">
+        </app-file-metadata>
+      </div>
+    </div>
+
+    <br/>
+
+    <div class="card">
+      <div class="card-header">
+        <label class="custom-file">
+            <input type="file" id="file" multiple (change)="fileSelected($event)" class="custom-file-input form-control">
+            <span class="custom-file-control"></span>
+          </label>
+        <button type="button" class="btn btn-primary" style="float: right">Nahrat na server</button>
+      </div>
+
+      <div class="card-block">
+        <div dnd-sortable-container [sortableData]="fileList" class="row">
+          <div *ngFor="let file of fileList; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i" class="col-sm-12">
+            <app-file-item [file]="file" [categories]="categories" [sources]="sources" [baseSelection]="baseMetadata" (itemDelete)="onFileDelete($event)"
+              [index]="i"></app-file-item>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
