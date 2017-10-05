@@ -1,3 +1,4 @@
+import { FileItemMetadataModel } from './../file-metadata/fileItemMetadataModel';
 import { FileItemModel } from './fileItemModel';
 import { ICodeList } from './../models/ICodeList';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, DoCheck, KeyValueDiffers, Output, EventEmitter } from '@angular/core';
@@ -5,47 +6,49 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, DoCheck, KeyValueDi
 @Component({
   selector: 'app-file-item',
   templateUrl: './file-item.component.html',
-  styleUrls: ['./file-item.component.css']
+  styleUrls: ['./file-item.component.scss']
 })
 export class FileItemComponent implements OnInit, OnChanges, DoCheck {
 
-  @Input() private file: File;
+  @Input() fileItem: FileItemModel;
   @Input() categories: ICodeList[];
   @Input() sources: ICodeList[];
+  @Input() licenses: ICodeList[];
+  @Input() seasons: ICodeList[];
+  @Input() teams: ICodeList[];
+  @Input() matches: ICodeList[];
   @Input() index: number;
 
-  @Input() baseSelection: FileItemModel;
+  @Input() private baseSelection: FileItemMetadataModel;
 
-  @Output() itemDelete: EventEmitter<File> = new EventEmitter<File>();
+  @Output() itemDelete: EventEmitter<FileItemModel> = new EventEmitter<FileItemModel>();
 
   url: string;
   useBaseSelection: boolean;
-  selectionModel: FileItemModel;
   private differ: any;
 
   constructor(private differs: KeyValueDiffers) {
     this.differ = differs.find({}).create(null);
-    this.selectionModel = this.baseSelection;
     this.useBaseSelection = true;
   }
 
   onUseBaseSelectionChanged() {
-    this.selectionModel = this.useBaseSelection ? this.baseSelection : new FileItemModel();
+    this.fileItem.metadata = null;
+    this.fileItem.metadata = this.useBaseSelection ? this.baseSelection : this.baseSelection.clone();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['baseSelection']) {
-      console.log(JSON.stringify(changes['baseSelection']))
-      this.selectionModel = changes['baseSelection'].currentValue as FileItemModel;
+      this.fileItem.metadata = changes['baseSelection'].currentValue as FileItemMetadataModel;
     }
   }
 
   ngDoCheck() {
-    const changes = this.differ.diff(this.selectionModel);
+    const changes = this.differ.diff(this.fileItem.metadata);
 
     if (changes) {
       changes.forEachChangedItem(r => {
-        this.selectionModel[r.key] = r.currentValue;
+        this.fileItem.metadata[r.key] = r.currentValue;
       });
 
     }
@@ -58,11 +61,11 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
       this.url = event.target.result;
     }
 
-    reader.readAsDataURL(this.file);
+    reader.readAsDataURL(this.fileItem.file);
   }
 
   onDeleteItem() {
-    this.itemDelete.emit(this.file);
+    this.itemDelete.emit(this.fileItem);
   }
 
 }

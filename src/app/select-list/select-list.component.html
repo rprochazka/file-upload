@@ -1,0 +1,7 @@
+<div class="form-group row">
+  <label [for]="id" class="col-sm-4 col-form-label">{{label}}</label>
+  <select [disabled]="disabled" [(ngModel)]="value" [id]="id" class="col-sm-8 form-control">
+        <option [ngValue]="0">--- Vyber ---</option>
+        <option *ngFor="let item of items" [ngValue]="item.id">{{item.value}}</option>
+      </select>
+</div>

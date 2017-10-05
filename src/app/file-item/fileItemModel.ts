@@ -1,11 +1,11 @@
-export class FileItemModel {
-  title: string;
-  description: string;
-  selectedCategory: number;
-  selectedSource: number;
+import { FileItemMetadataModel } from './../file-metadata/fileItemMetadataModel';
 
-  constructor() {
-    this.selectedCategory = 0;
-    this.selectedSource = 0;
+export class FileItemModel {
+  metadata: FileItemMetadataModel;
+  file: File;
+
+  constructor(file: File) {
+    this.file = file;
+    this.metadata = new FileItemMetadataModel()
   }
 }

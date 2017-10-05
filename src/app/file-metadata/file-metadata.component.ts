@@ -1,4 +1,4 @@
-import { FileItemModel } from './../file-item/fileItemModel';
+import { FileItemMetadataModel } from './fileItemMetadataModel';
 import { Component, Input } from '@angular/core';
 import { ICodeList } from '../models/ICodeList';
 
@@ -9,5 +9,10 @@ import { ICodeList } from '../models/ICodeList';
 export class FileMetadataComponent {
   @Input() categories: ICodeList[];
   @Input() sources: ICodeList[];
-  @Input() baseSelection: FileItemModel;
+  @Input() licenses: ICodeList[];
+  @Input() seasons: ICodeList[];
+  @Input() teams: ICodeList[];
+  @Input() matches: ICodeList[];
+  @Input() baseSelection: FileItemMetadataModel;
+  @Input() disabled: boolean;
 }

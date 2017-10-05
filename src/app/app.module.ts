@@ -9,6 +9,7 @@ import { NgbModule as BootstrapModule } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileItemComponent } from './file-item/file-item.component';
 import { DndModule } from 'ng2-dnd';
+import { SelectListComponent } from './select-list/select-list.component';
 
 import { MyService } from './services/service';
 
@@ -17,7 +18,8 @@ import { MyService } from './services/service';
     AppComponent,
     FileUploadComponent,
     FileItemComponent,
-    FileMetadataComponent
+    FileMetadataComponent,
+    SelectListComponent
   ],
   imports: [
     BrowserModule,

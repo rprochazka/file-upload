@@ -1,10 +1,11 @@
-<div class="row">
+<div class="row file-item">
   <div class="col-sm-2">
-    <img [src]="url" width="100px" height="100px" />
+    <img *ngIf="url" [src]="url" width="100px" height="100px" />
   </div>
 
   <div class="col-sm-8">
-    <app-file-metadata [categories]="categories" [sources]="sources" [(baseSelection)]="selectionModel">
+    <app-file-metadata [categories]="categories" [sources]="sources" [licenses]="licenses" [seasons]="seasons" [teams]="teams"
+      [matches]="matches" [(baseSelection)]="fileItem.metadata" [disabled]="useBaseSelection">
     </app-file-metadata>
   </div>
 
