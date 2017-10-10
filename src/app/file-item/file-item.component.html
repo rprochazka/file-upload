@@ -1,27 +1,32 @@
-<div class="row file-item">
+<div class="row row-margin file-item">
   <div class="col-sm-2">
-    <img *ngIf="url" [src]="url" width="100px" height="100px" />
+    <img *ngIf="url" [src]="url" class='img-fluid img-thumbnail rounded mx-auto d-block' />
   </div>
 
-  <div class="col-sm-8">
+  <div class="col-sm-9">
     <app-file-metadata [categories]="categories" [sources]="sources" [licenses]="licenses" [seasons]="seasons" [teams]="teams"
       [matches]="matches" [(baseSelection)]="fileItem.metadata" [disabled]="useBaseSelection">
     </app-file-metadata>
   </div>
 
-  <div class="col-sm-2">
+  <div class="col-sm-1">
 
-    <label class="custom-control custom-checkbox">
-      <input type="checkbox" class="custom-control-input" [(ngModel)]="useBaseSelection" (change)="onUseBaseSelectionChanged($event)">
-      <span class="custom-control-indicator"></span>
-      <span class="custom-control-description">Hromadne</span>
-    </label>
+    <div class="row row-margin action-col">
+      <div>
+        <label class="btn btn-primary">
+          <input type="checkbox" [(ngModel)]="useBaseSelection" (change)="onUseBaseSelectionChanged()">
+          <!-- <span class="custom-control-indicator"></span> -->
+          <span class="custom-control-description">Upravit</span>
+        </label>
+      </div>
 
-    <div>
-      Index <span>{{index + 1}}</span>
-    </div>
-    <div>
-      <button (click)="onDeleteItem()" type="button" class="btn btn-danger">Vymazat</button>
+      <div>
+        <button (click)="onDeleteItem()" type="button" class="btn btn-danger">Vymazat</button>
+      </div>
+
+      <div>
+        Poradi: <span>{{index + 1}}</span>
+      </div>
     </div>
   </div>
 </div>

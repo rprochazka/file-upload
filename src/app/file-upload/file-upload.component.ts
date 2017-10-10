@@ -1,3 +1,5 @@
+import { UploadService } from './../services/upload.service';
+import { Observable } from 'rxjs/Rx';
 import { FileItemMetadataModel } from './../file-metadata/fileItemMetadataModel';
 import { FileItemModel } from './../file-item/fileItemModel';
 import { ICodeList } from './../models/ICodeList';
@@ -21,7 +23,7 @@ export class FileUploadComponent implements OnInit {
   matches: ICodeList[];
   baseMetadata: FileItemMetadataModel = new FileItemMetadataModel()
 
-  constructor(private myService: MyService) { }
+  constructor(private myService: MyService, private uploadService: UploadService) { }
 
   ngOnInit(): void {
     this.myService.getCategories().subscribe(resp => {
@@ -64,6 +66,20 @@ export class FileUploadComponent implements OnInit {
 
   onUpload() {
     console.log(this.fileItems);
+    Observable.from(this.fileItems)
+      .mergeMap(fileItem => {
+        const formData: FormData = new FormData()
+        for (const name in fileItem.metadata) {
+          if (typeof (fileItem.metadata[name]) !== 'function') {
+            formData.append(name, fileItem.metadata[name])
+          }
+        }
+        formData.append('file', fileItem.file);
+        return this.uploadService.uploadFileItem(formData);
+      })
+      .subscribe((resp) => {
+        console.log('File item sent')
+      })
   }
 }
 
