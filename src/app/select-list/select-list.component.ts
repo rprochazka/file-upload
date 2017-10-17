@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, ElementRef, Renderer } from '@angular/core';
+import { Component, Input, Output, forwardRef, ElementRef, Renderer, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 import { ICodeList } from '../models/ICodeList';
@@ -20,6 +20,7 @@ export class SelectListComponent implements ControlValueAccessor {
   @Input() label: string;
   @Input() items: ICodeList[];
   @Input() disabled: boolean;
+  @Output() selectionChanged: EventEmitter<any> = new EventEmitter<any>();
 
   id: string;
 
@@ -58,4 +59,8 @@ export class SelectListComponent implements ControlValueAccessor {
   }
 
   registerOnTouched() { }
+
+  onSelectionChanged(item: any) {
+    this.selectionChanged.emit(item);
+  }
 }

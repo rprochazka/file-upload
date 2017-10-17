@@ -1,6 +1,7 @@
+import { ICodeList } from './../models/ICodeList';
+import { CodeListService } from './../services/code-list.service';
 import { FileItemMetadataModel } from './fileItemMetadataModel';
-import { Component, Input } from '@angular/core';
-import { ICodeList } from '../models/ICodeList';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-file-metadata',
@@ -15,4 +16,20 @@ export class FileMetadataComponent {
   @Input() matches: ICodeList[];
   @Input() baseSelection: FileItemMetadataModel;
   @Input() disabled: boolean;
+  @Output() newMatchesLoaded: EventEmitter<ICodeList[]> = new EventEmitter<ICodeList[]>();
+
+  constructor(private codeListService: CodeListService) { }
+
+  loadNewMatches() {
+    const seasonId = this.baseSelection.selectedSeason;
+    const teamId = this.baseSelection.selectedTeam;
+    if (seasonId && teamId) {
+      this.codeListService.getMatches(seasonId, teamId).subscribe(resp => {
+        this.newMatchesLoaded.emit(resp);
+      })
+    } else {
+      this.newMatchesLoaded.emit(null);
+    }
+
+  }
 }

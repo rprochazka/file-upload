@@ -26,6 +26,7 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
   url: string;
   useBaseSelection: boolean;
   private differ: any;
+  private currMatches: ICodeList[];
 
   constructor(private differs: KeyValueDiffers) {
     this.differ = differs.find({}).create(null);
@@ -35,11 +36,23 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
   onUseBaseSelectionChanged() {
     this.fileItem.metadata = null;
     this.fileItem.metadata = this.useBaseSelection ? this.baseSelection : this.baseSelection.clone();
+    if (this.useBaseSelection) {
+      this.currMatches = this.matches;
+    }
+  }
+
+  onNewMatchesLoaded(newMatches: ICodeList[]) {
+    if (!this.useBaseSelection) {
+      this.currMatches = newMatches;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['baseSelection']) {
       this.fileItem.metadata = changes['baseSelection'].currentValue as FileItemMetadataModel;
+    }
+    if (changes['matches'] && this.useBaseSelection) {
+      this.currMatches = changes['matches'].currentValue;
     }
   }
 

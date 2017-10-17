@@ -7,7 +7,7 @@
       </div>
       <div class="card-block">
         <app-file-metadata [categories]="categories" [sources]="sources" [licenses]="licenses" [seasons]="seasons" [teams]="teams"
-          [matches]="matches" [(baseSelection)]="baseMetadata">
+          [matches]="matches" [(baseSelection)]="baseMetadata" (newMatchesLoaded)="onNewMatchesLoaded($event)">
         </app-file-metadata>
       </div>
     </div>
@@ -25,7 +25,7 @@
 
       <div class="card-block">
         <div dnd-sortable-container [sortableData]="fileItems" class="row">
-          <div *ngFor="let fileItem of fileItems; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i" class="col-sm-12">
+          <div *ngFor="let fileItem of fileItems; let i = index" class="list-group-item" class="col-sm-12">
             <app-file-item [fileItem]="fileItem" [categories]="categories" [sources]="sources" [licenses]="licenses" [seasons]="seasons"
               [teams]="teams" [matches]="matches" [baseSelection]="baseMetadata" (itemDelete)="onFileDelete($event)" [index]="i"></app-file-item>
           </div>

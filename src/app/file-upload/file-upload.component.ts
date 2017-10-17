@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { FileItemMetadataModel } from './../file-metadata/fileItemMetadataModel';
 import { FileItemModel } from './../file-item/fileItemModel';
 import { ICodeList } from './../models/ICodeList';
-import { MyService } from './../services/service';
+import { CodeListService } from './../services/code-list.service';
 import { Component, OnInit } from '@angular/core';
 
 
@@ -23,32 +23,32 @@ export class FileUploadComponent implements OnInit {
   matches: ICodeList[];
   baseMetadata: FileItemMetadataModel = new FileItemMetadataModel()
 
-  constructor(private myService: MyService, private uploadService: UploadService) { }
+  constructor(private codeListService: CodeListService, private uploadService: UploadService) { }
 
   ngOnInit(): void {
-    this.myService.getCategories().subscribe(resp => {
+    this.codeListService.getCategories().subscribe(resp => {
       this.categories = resp;
     });
 
-    this.myService.getSources().subscribe(resp => {
+    this.codeListService.getSources().subscribe(resp => {
       this.sources = resp;
     })
 
-    this.myService.getLicenses().subscribe(resp => {
+    this.codeListService.getLicenses().subscribe(resp => {
       this.licenses = resp;
     })
 
-    this.myService.getSeasons().subscribe(resp => {
+    this.codeListService.getSeasons().subscribe(resp => {
       this.seasons = resp;
     })
 
-    this.myService.getTeams().subscribe(resp => {
+    this.codeListService.getTeams().subscribe(resp => {
       this.teams = resp;
     })
+  }
 
-    this.myService.getMatches().subscribe(resp => {
-      this.matches = resp;
-    })
+  onNewMatchesLoaded(newMatches: ICodeList[]) {
+    this.matches = newMatches;
   }
 
   fileSelected(event): void {

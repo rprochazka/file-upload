@@ -12,7 +12,7 @@ import { FileItemComponent } from './file-item/file-item.component';
 import { DndModule } from 'ng2-dnd';
 import { SelectListComponent } from './select-list/select-list.component';
 
-import { MyService } from './services/service';
+import { CodeListService } from './services/code-list.service';
 import { UploadService } from './services/upload.service';
 
 @NgModule({
@@ -32,7 +32,7 @@ import { UploadService } from './services/upload.service';
     HttpClientModule,
   ],
   providers: [
-    MyService,
+    CodeListService,
     UploadService,
     {
       provide: ErrorHandler,

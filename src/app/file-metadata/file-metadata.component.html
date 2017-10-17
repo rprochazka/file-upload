@@ -29,10 +29,10 @@
   </div>
 
   <div class="col-sm-4">
-    <app-select-list label="Rocnik" [(ngModel)]="baseSelection.selectedSeason" [items]="seasons" [disabled]="disabled">
+    <app-select-list label="Rocnik" [(ngModel)]="baseSelection.selectedSeason" [items]="seasons" [disabled]="disabled" (selectionChanged)="loadNewMatches()">
     </app-select-list>
 
-    <app-select-list label="Tym" [(ngModel)]="baseSelection.selectedTeam" [items]="teams" [disabled]="disabled">
+    <app-select-list label="Tym" [(ngModel)]="baseSelection.selectedTeam" [items]="teams" [disabled]="disabled" (selectionChanged)="loadNewMatches()">
     </app-select-list>
 
     <app-select-list label="Zapas" [(ngModel)]="baseSelection.selectedMatch" [items]="matches" [disabled]="disabled">
