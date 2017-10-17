@@ -25,8 +25,8 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
 
   url: string;
   useBaseSelection: boolean;
+  currMatches: ICodeList[];
   private differ: any;
-  private currMatches: ICodeList[];
 
   constructor(private differs: KeyValueDiffers) {
     this.differ = differs.find({}).create(null);

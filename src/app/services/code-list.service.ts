@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { HttpClient } from '@angular/common/http';
 
-const BASE_URL = 'http://www.bohemians.cz/api/uploader';
+const BASE_URL = 'https://www.bohemians.cz/api/uploader';
 
 @Injectable()
 export class CodeListService {
