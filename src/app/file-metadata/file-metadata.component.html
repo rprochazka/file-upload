@@ -1,15 +1,15 @@
 <div class="row row-margin">
-  <div class="col-sm-4">
+  <div class="col-lg-4">
     <div class="form-group row">
-      <label for="title" class="col-sm-3 col-form-label">Titulek</label>
-      <div class="col-sm-9">
+      <label for="title" class="col-lg-3 col-form-label">Titulek</label>
+      <div class="col-lg-9">
         <input type="text" [disabled]="disabled" [(ngModel)]="baseSelection.title" class="form-control" id="title" placeholder="Kratky popis">
       </div>
     </div>
 
     <div class="form-group row">
-      <label for="description" class="col-sm-3 col-form-label">Popis</label>
-      <div class="col-sm-9">
+      <label for="description" class="col-lg-3 col-form-label">Popis</label>
+      <div class="col-lg-9">
         <textarea [disabled]="disabled" [(ngModel)]="baseSelection.description" class="form-control" id="description" placeholder="Popis"
           rows="3"></textarea>
       </div>
@@ -17,7 +17,7 @@
   </div>
 
 
-  <div class="col-sm-4">
+  <div class="col-lg-4">
     <app-select-list label="Kategorie" [(ngModel)]="baseSelection.selectedCategory" [items]="categories" [disabled]="disabled">
     </app-select-list>
 
@@ -28,7 +28,7 @@
     </app-select-list>
   </div>
 
-  <div class="col-sm-4">
+  <div class="col-lg-4">
     <app-select-list label="Rocnik" [(ngModel)]="baseSelection.selectedSeason" [items]="seasons" [disabled]="disabled" (selectionChanged)="loadNewMatches()">
     </app-select-list>
 

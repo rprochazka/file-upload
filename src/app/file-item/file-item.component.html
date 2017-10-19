@@ -1,15 +1,15 @@
 <div class="row row-margin file-item">
-  <div class="col-sm-2" dnd-sortable [sortableIndex]="index">
+  <div class="col-lg-2" dnd-sortable [sortableIndex]="index">
     <img *ngIf="url" [src]="url" class='img-fluid img-thumbnail rounded mx-auto d-block' />
   </div>
 
-  <div class="col-sm-9">
+  <div class="col-lg-9">
     <app-file-metadata [categories]="categories" [sources]="sources" [licenses]="licenses" [seasons]="seasons" [teams]="teams"
       [matches]="currMatches" [(baseSelection)]="fileItem.metadata" [disabled]="useBaseSelection" (newMatchesLoaded)="onNewMatchesLoaded($event)">
     </app-file-metadata>
   </div>
 
-  <div class="col-sm-1">
+  <div class="col-lg-1">
 
     <div class="row row-margin action-col">
       <div>

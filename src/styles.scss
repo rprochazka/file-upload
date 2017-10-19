@@ -1,9 +1,34 @@
+// Import Bootstrap parts
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+// Import "include-media"
+@import "../node_modules/include-media/dist/include-media";
+
+// 'include-media' plugging into Bootstrap 4's Grid Breakpoints map
+$breakpoints: $grid-breakpoints;
+
+
 .row-margin {
   margin-left: 10px;
   margin-right: 15px;
   margin-top: 15px;
 }
 
-.col-form-label {
-  text-align: right;
+
+@include media(">lg") {
+  .col-form-label {
+    text-align: right;
+  }
 }
+
+$custom-file-text: (
+  placeholder: (
+    en: "Choose file...",
+    cz: "Vyber soubor..."
+  ),
+  button-label: (
+    en: "Browse",
+    cz: "Vyber"
+  )
+);
+
