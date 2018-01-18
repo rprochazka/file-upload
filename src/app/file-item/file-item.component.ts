@@ -31,7 +31,6 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
   constructor(private differs: KeyValueDiffers) {
     this.differ = differs.find({}).create();
     this.useBaseSelection = true;
-    this.fileItem.metadata.order = this.index;
   }
 
   onUseBaseSelectionChanged() {
