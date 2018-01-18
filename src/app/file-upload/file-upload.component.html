@@ -3,7 +3,7 @@
 
     <div class="card">
       <div class="card-header">
-        Hromadne nastaveni
+        Hromadné nastavení
       </div>
       <div class="card-block">
         <app-file-metadata [categories]="categories" [sources]="sources" [licenses]="licenses" [seasons]="seasons" [teams]="teams"
@@ -31,6 +31,10 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="card-block">
+      <span>Upload Endpoint: {{uploadUri}}, Data Endpoint: {{dataUri}}</span>
     </div>
 
   </form>

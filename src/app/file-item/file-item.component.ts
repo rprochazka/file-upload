@@ -29,7 +29,7 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
   private differ: any;
 
   constructor(private differs: KeyValueDiffers) {
-    this.differ = differs.find({}).create(null);
+    this.differ = differs.find({}).create();
     this.useBaseSelection = true;
   }
 

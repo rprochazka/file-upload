@@ -15,6 +15,8 @@ import { SelectListComponent } from './select-list/select-list.component';
 import { CodeListService } from './services/code-list.service';
 import { UploadService } from './services/upload.service';
 
+import {Global} from './global';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +31,8 @@ import { UploadService } from './services/upload.service';
     DndModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
+    HttpClientModule
+    
   ],
   providers: [
     CodeListService,
@@ -37,7 +40,8 @@ import { UploadService } from './services/upload.service';
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler
-    }
+    },
+    Global
   ],
   bootstrap: [AppComponent]
 })

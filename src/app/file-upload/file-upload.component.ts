@@ -5,7 +5,7 @@ import { FileItemModel } from './../file-item/fileItemModel';
 import { ICodeList } from './../models/ICodeList';
 import { CodeListService } from './../services/code-list.service';
 import { Component, OnInit } from '@angular/core';
-
+import { Global } from './../global';
 
 @Component({
   selector: 'app-file-upload',
@@ -23,7 +23,10 @@ export class FileUploadComponent implements OnInit {
   matches: ICodeList[];
   baseMetadata: FileItemMetadataModel = new FileItemMetadataModel()
 
-  constructor(private codeListService: CodeListService, private uploadService: UploadService) { }
+  constructor(private codeListService: CodeListService, private uploadService: UploadService, private global: Global) { }
+
+  public uploadUri: string = this.global.uploadEndpoint;
+  public dataUri: string = this.global.dataEndpoint;
 
   ngOnInit(): void {
     this.codeListService.getCategories().subscribe(resp => {
@@ -32,19 +35,19 @@ export class FileUploadComponent implements OnInit {
 
     this.codeListService.getSources().subscribe(resp => {
       this.sources = resp;
-    })
+    });
 
     this.codeListService.getLicenses().subscribe(resp => {
       this.licenses = resp;
-    })
+    });
 
     this.codeListService.getSeasons().subscribe(resp => {
       this.seasons = resp;
-    })
+    });
 
     this.codeListService.getTeams().subscribe(resp => {
       this.teams = resp;
-    })
+    });
   }
 
   onNewMatchesLoaded(newMatches: ICodeList[]) {
@@ -71,15 +74,15 @@ export class FileUploadComponent implements OnInit {
         const formData: FormData = new FormData()
         for (const name in fileItem.metadata) {
           if (typeof (fileItem.metadata[name]) !== 'function') {
-            formData.append(name, fileItem.metadata[name])
+            formData.append(name, fileItem.metadata[name]);
           }
         }
         formData.append('file', fileItem.file);
         return this.uploadService.uploadFileItem(formData);
       })
       .subscribe((resp) => {
-        console.log('File item sent')
-      })
+        console.log('File item sent');
+      });
   }
 }
 
