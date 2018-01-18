@@ -6,6 +6,6 @@ export class FileItemModel {
 
   constructor(file: File) {
     this.file = file;
-    this.metadata = new FileItemMetadataModel()
+    this.metadata = new FileItemMetadataModel();
   }
 }

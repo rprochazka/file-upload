@@ -7,6 +7,7 @@ export class FileItemMetadataModel {
   selectedSeason: number;
   selectedTeam: number;
   selectedMatch: number;
+  order: number;
 
   constructor() {
     this.selectedCategory = 0;
@@ -15,6 +16,7 @@ export class FileItemMetadataModel {
     this.selectedSeason = 0;
     this.selectedTeam = 0;
     this.selectedMatch = 0;
+    this.order = 0;
   }
 
   clone(): FileItemMetadataModel {
@@ -27,6 +29,7 @@ export class FileItemMetadataModel {
     fileItem.selectedSeason = this.selectedSeason;
     fileItem.selectedTeam = this.selectedTeam;
     fileItem.selectedMatch = this.selectedMatch;
+    fileItem.order = this.order;
 
     return fileItem;
   }
