@@ -68,8 +68,12 @@ export class FileUploadComponent implements OnInit {
   }
 
   onUpload() {
-    console.log(this.fileItems);
-    Observable.from(this.fileItems)
+    const fileItems = this.fileItems.map((item, index) => {
+      item.metadata.order = index + 1;
+      return item;
+    });
+    console.log(fileItems);
+    Observable.from(fileItems)
       .mergeMap(fileItem => {
         const formData: FormData = new FormData()
         for (const name in fileItem.metadata) {
@@ -81,7 +85,7 @@ export class FileUploadComponent implements OnInit {
         return this.uploadService.uploadFileItem(formData);
       })
       .subscribe((resp) => {
-        console.log('File item sent');
+        console.log('File item sent ...' + JSON.stringify(resp));
       });
   }
 }

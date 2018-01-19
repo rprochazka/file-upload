@@ -65,8 +65,6 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
       });
 
     }
-
-    this.fileItem.metadata.order = this.index;
   }
 
   ngOnInit(): void {
