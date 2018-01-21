@@ -1,0 +1,4 @@
+enum SelectedGalleryTypeEnum {
+  Article,
+  Match
+}

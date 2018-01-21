@@ -4,8 +4,6 @@ import { Observable } from 'rxjs/Rx';
 import { HttpClient } from '@angular/common/http';
 import { Global } from './../global';
 
-//const BASE_URL = 'https://www.bohemians.cz/api/uploader';
-
 @Injectable()
 export class CodeListService {
 
@@ -44,5 +42,10 @@ export class CodeListService {
   getMatches(seasonId: number, teamId: number): Observable<ICodeList[]> {
     const url = `${this.baseUrl}/GetZapasy`;
     return this.http.post<ICodeList[]>(url, { rocnikId: seasonId, bohemkaTymId: teamId }).map(resp => resp);
+  }
+
+  getArticles(): Observable<ICodeList[]> {
+    const url = `${this.baseUrl}/GetArticles`;
+    return this.http.get<ICodeList[]>(url).map(resp => resp);
   }
 }
