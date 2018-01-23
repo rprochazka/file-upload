@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Global } from './../global';
 
-//const UPLOAD_URL = 'http://localhost:54772/fileupload/upload';
-
 @Injectable()
 export class UploadService {
 

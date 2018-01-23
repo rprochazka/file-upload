@@ -30,6 +30,8 @@ export class FileMetadataComponent {
     } else {
       this.newMatchesLoaded.emit(null);
     }
-
   }
+
+  
+
 }
