@@ -69,8 +69,13 @@ export class FileUploadComponent implements OnInit {
 
   onUpload() {
     const fileItems = this.fileItems.map((item, index) => {
-      item.metadata.order = index + 1;
-      return item;
+      return {
+        ...item,
+        metadata: {
+          ...item.metadata,
+          order: index
+        }
+      }
     });
     console.log(fileItems);
     Observable.from(fileItems)
