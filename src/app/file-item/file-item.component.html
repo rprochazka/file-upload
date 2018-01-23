@@ -5,7 +5,8 @@
 
   <div class="col-lg-9">
     <app-file-metadata [categories]="categories" [sources]="sources" [licenses]="licenses" [seasons]="seasons" [teams]="teams"
-      [matches]="currMatches" [(baseSelection)]="fileItem.metadata" [disabled]="useBaseSelection" (newMatchesLoaded)="onNewMatchesLoaded($event)">
+                       [matches]="currMatches" [articles]="articles" [(baseSelection)]="fileItem.metadata" [disabled]="useBaseSelection"
+                       [index]="index" (newMatchesLoaded)="onNewMatchesLoaded($event)">
     </app-file-metadata>
   </div>
 

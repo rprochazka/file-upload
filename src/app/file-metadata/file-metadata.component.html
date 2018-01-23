@@ -29,13 +29,29 @@
   </div>
 
   <div class="col-lg-4">
-    <app-select-list label="Rocnik" [(ngModel)]="baseSelection.selectedSeason" [items]="seasons" [disabled]="disabled" (selectionChanged)="loadNewMatches()">
-    </app-select-list>
+    <div>
+      <label for="addGalleryCheckbox">Vytvořit galerii</label>
+      <input id="addGalleryCheckbox" type="checkbox" [(ngModel)]="baseSelection.addGallery" [disabled]="disabled">
 
-    <app-select-list label="Tym" [(ngModel)]="baseSelection.selectedTeam" [items]="teams" [disabled]="disabled" (selectionChanged)="loadNewMatches()">
-    </app-select-list>
+      <span *ngIf="baseSelection.addGallery">
+        <input type="radio" name="galleryType{{index}}" (click)="galleryTypeChange('match')" [disabled]="disabled" [checked]="showMatchGalleryProperties()">Zápas
+        <input type="radio" name="galleryType{{index}}" (click)="galleryTypeChange('article')" [disabled]="disabled" [checked]="showArticleGalleryProperties()">Článek<br>
+      </span>
+    </div>
 
-    <app-select-list label="Zapas" [(ngModel)]="baseSelection.selectedMatch" [items]="matches" [disabled]="disabled">
-    </app-select-list>
+    <div *ngIf="showMatchGalleryProperties()">
+      <app-select-list label="Ročník" [(ngModel)]="baseSelection.selectedSeason" [items]="seasons" [disabled]="disabled" (selectionChanged)="loadNewMatches()">
+      </app-select-list>
+      <app-select-list label="Tým" [(ngModel)]="baseSelection.selectedTeam" [items]="teams" [disabled]="disabled" (selectionChanged)="loadNewMatches()">
+      </app-select-list>
+      <app-select-list label="Zápas" [(ngModel)]="baseSelection.selectedMatch" [items]="matches" [disabled]="disabled">
+      </app-select-list>
+    </div>
+   
+    <div *ngIf="showArticleGalleryProperties()">
+      <app-select-list label="Článek" [(ngModel)]="baseSelection.selectedArticle" [items]="articles" [disabled]="disabled">
+      </app-select-list>
+    </div>
+    
   </div>
 </div>

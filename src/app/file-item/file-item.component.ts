@@ -17,6 +17,7 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
   @Input() seasons: ICodeList[];
   @Input() teams: ICodeList[];
   @Input() matches: ICodeList[];
+  @Input() articles: ICodeList[];
   @Input() index: number;
 
   @Input() private baseSelection: FileItemMetadataModel;
@@ -35,7 +36,7 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
 
   onUseBaseSelectionChanged() {
     this.fileItem.metadata = null;
-    this.fileItem.metadata = this.useBaseSelection ? this.baseSelection : this.baseSelection.clone();
+    this.fileItem.metadata = this.useBaseSelection ? this.baseSelection : this.baseSelection.clone(this.index);
     if (this.useBaseSelection) {
       this.currMatches = this.matches;
     }
@@ -75,6 +76,8 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
     }
 
     reader.readAsDataURL(this.fileItem.file);
+
+    //this.baseSelection.order = this.index;
   }
 
   onDeleteItem() {

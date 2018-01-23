@@ -1,33 +1,30 @@
 <div class="container mw-100">
   <form action="">
-
     <div class="card">
       <div class="card-header">
         Hromadné nastavení
       </div>
       <div class="card-block">
         <app-file-metadata [categories]="categories" [sources]="sources" [licenses]="licenses" [seasons]="seasons" [teams]="teams"
-          [matches]="matches" [(baseSelection)]="baseMetadata" (newMatchesLoaded)="onNewMatchesLoaded($event)">
+                           [matches]="matches" [articles]="articles" [(baseSelection)]="baseMetadata" (newMatchesLoaded)="onNewMatchesLoaded($event)">
         </app-file-metadata>
       </div>
     </div>
-
-    <br/>
+    <br />
 
     <div class="card">
       <div class="card-header">
         <label class="custom-file">
-            <input type="file" id="file" multiple (change)="fileSelected($event)" class="custom-file-input form-control">
-            <span class="custom-file-control"></span>
-          </label>
-        <button type="button" (click)="onUpload()" class="btn btn-primary" style="float: right">Nahrat na server</button>
+          <input type="file" id="file" multiple (change)="fileSelected($event)" class="custom-file-input form-control" /> 
+          <span class="custom-file-control btn btn-primary">Vyber soubory</span>
+        </label>
+        <button type="button" [disabled]="!canUpload()" (click)="onUpload()" class="btn btn-primary" style="float: right">Nahrát na server</button>
       </div>
-
       <div class="card-block">
         <div dnd-sortable-container [sortableData]="fileItems" class="row">
           <div *ngFor="let fileItem of fileItems; let i = index" class="list-group-item" class="col-sm-12">
             <app-file-item [fileItem]="fileItem" [categories]="categories" [sources]="sources" [licenses]="licenses" [seasons]="seasons"
-              [teams]="teams" [matches]="matches" [baseSelection]="baseMetadata" (itemDelete)="onFileDelete($event)" [index]="i"></app-file-item>
+                           [teams]="teams" [matches]="matches" [articles]="articles" [baseSelection]="baseMetadata" (itemDelete)="onFileDelete($event)" [index]="i"></app-file-item>
           </div>
         </div>
       </div>
@@ -36,6 +33,5 @@
     <div class="card-block">
       <span>Upload Endpoint: {{uploadUri}}, Data Endpoint: {{dataUri}}</span>
     </div>
-
   </form>
 </div>

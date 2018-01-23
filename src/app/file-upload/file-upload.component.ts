@@ -21,7 +21,8 @@ export class FileUploadComponent implements OnInit {
   seasons: ICodeList[];
   teams: ICodeList[];
   matches: ICodeList[];
-  baseMetadata: FileItemMetadataModel = new FileItemMetadataModel()
+  articles: ICodeList[];
+  baseMetadata: FileItemMetadataModel = new FileItemMetadataModel();
 
   constructor(private codeListService: CodeListService, private uploadService: UploadService, private global: Global) { }
 
@@ -48,6 +49,10 @@ export class FileUploadComponent implements OnInit {
     this.codeListService.getTeams().subscribe(resp => {
       this.teams = resp;
     });
+
+    this.codeListService.getArticles().subscribe(resp => {
+      this.articles = resp;
+    });
   }
 
   onNewMatchesLoaded(newMatches: ICodeList[]) {
@@ -69,13 +74,13 @@ export class FileUploadComponent implements OnInit {
 
   onUpload() {
     const fileItems = this.fileItems.map((item, index) => {
-      item.metadata.order = index + 1;
+      item.metadata = item.metadata.clone(index);
       return item;
     });
     console.log(fileItems);
     Observable.from(fileItems)
       .mergeMap(fileItem => {
-        const formData: FormData = new FormData()
+        const formData: FormData = new FormData();
         for (const name in fileItem.metadata) {
           if (typeof (fileItem.metadata[name]) !== 'function') {
             formData.append(name, fileItem.metadata[name]);
@@ -87,6 +92,27 @@ export class FileUploadComponent implements OnInit {
       .subscribe((resp) => {
         console.log('File item sent ...' + JSON.stringify(resp));
       });
+  }
+
+  canUpload(): boolean {
+    if (this.fileItems && this.fileItems.length > 0) {
+      for (let fi of this.fileItems) {
+        if (!this.fileMetadataOk(fi.metadata)) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    return false;
+  }
+
+  private fileMetadataOk(metadata: FileItemMetadataModel): boolean {
+    return metadata.title &&
+      metadata.description &&
+      metadata.selectedCategory > 0 &&
+      metadata.selectedSource > 0 &&
+      metadata.selectedLicense > 0;
   }
 }
 

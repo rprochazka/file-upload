@@ -2,6 +2,6 @@ import { ErrorHandler } from '@angular/core';
 
 export class GlobalErrorHandler implements ErrorHandler {
   handleError(error: any): void {
-    console.log('shit happens ...' + error.toString())
+    console.log(error.toString());
   }
 }
