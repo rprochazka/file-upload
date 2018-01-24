@@ -1,10 +1,13 @@
-import { UploadService } from './../services/upload.service';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
+
+import { ToasterService } from 'angular2-toaster';
+
+import { UploadService, IUploadGallery, IItemOrder } from './../services/upload.service';
 import { FileItemMetadataModel } from './../file-metadata/fileItemMetadataModel';
 import { FileItemModel } from './../file-item/fileItemModel';
 import { ICodeList } from './../models/ICodeList';
 import { CodeListService } from './../services/code-list.service';
-import { Component, OnInit } from '@angular/core';
 import { Global } from './../global';
 
 @Component({
@@ -24,7 +27,13 @@ export class FileUploadComponent implements OnInit {
   articles: ICodeList[];
   baseMetadata: FileItemMetadataModel = new FileItemMetadataModel();
 
-  constructor(private codeListService: CodeListService, private uploadService: UploadService, private global: Global) { }
+  private uploadedFileItems: IUploadedFileItem[] = [];
+
+  constructor(
+    private codeListService: CodeListService,
+    private uploadService: UploadService,
+    private global: Global,
+    private toaster: ToasterService) { }
 
   public uploadUri: string = this.global.uploadEndpoint;
   public dataUri: string = this.global.dataEndpoint;
@@ -73,30 +82,52 @@ export class FileUploadComponent implements OnInit {
   }
 
   onUpload() {
-    const fileItems = this.fileItems.map((item, index) => {
-      return {
-        ...item,
-        metadata: {
-          ...item.metadata,
-          order: index
-        }
-      }
-    });
-    console.log(fileItems);
-    Observable.from(fileItems)
+    // const tasks$ = this.fileItems.map(fileItem => {
+    //   return this.uploadService.uploadFileItem(fileItem)
+    //     .map(resp => {
+    //       this.onUploadItemSuccess(fileItem, resp.itemId);
+    //       return <IUploadedFileItem>{
+    //         fileItem: fileItem,
+    //         newItemId: resp.itemId
+    //       }
+    //     })
+    //     .catch(error => {
+    //       this.onUploadItemFailed(fileItem, error);
+    //       return Observable.empty();
+    //     })
+    //   //.filter((uploadedItem: IUploadedFileItem) => uploadedItem !== null)
+    // });
+    // Observable.forkJoin(tasks$).subscribe(
+    //   (uploadedItems: IUploadedFileItem[]) => {
+    //     debugger
+    //     this.onUploadComplete(uploadedItems)
+    //   },
+    //   (error) => console.log('Error ' + error),
+    //   (() => console.log('Complete'))
+    // );
+
+
+    this.uploadedFileItems = [];
+    Observable.from(this.fileItems)
       .mergeMap(fileItem => {
-        const formData: FormData = new FormData();
-        for (const name in fileItem.metadata) {
-          if (typeof (fileItem.metadata[name]) !== 'function') {
-            formData.append(name, fileItem.metadata[name]);
-          }
-        }
-        formData.append('file', fileItem.file);
-        return this.uploadService.uploadFileItem(formData);
+        return this.uploadService.uploadFileItem(fileItem)
+          .map(resp => {
+            return <IUploadedFileItem>{
+              fileItem: fileItem,
+              newItemId: resp.itemId
+            }
+          })
+          .catch(error => {
+            this.onUploadItemFailed(fileItem, error);
+            return Observable.empty();
+          });
+
       })
-      .subscribe((resp) => {
-        console.log('File item sent ...' + JSON.stringify(resp));
-      });
+      .subscribe(
+      ((uploadedItem: IUploadedFileItem) => this.onUploadItemSuccess(uploadedItem.fileItem, uploadedItem.newItemId)),
+      (error => console.log('Error', error)),
+      (() => this.onUploadComplete())
+      );
   }
 
   canUpload(): boolean {
@@ -112,6 +143,40 @@ export class FileUploadComponent implements OnInit {
     return false;
   }
 
+  private onUploadItemSuccess(fileItem: FileItemModel, newItemId: number) {
+    this.toaster.pop('success', 'File uploaded', `File uploaded: ${fileItem.file.name}`);
+    const uploadedItem = this.fileItems.splice(this.fileItems.findIndex(i => i.order !== fileItem.order), 1);
+    this.uploadedFileItems.push({ fileItem: fileItem, newItemId: newItemId });
+  }
+
+  private onUploadItemFailed(fileItem: FileItemModel, error: any) {
+    console.log(`Upload failed: ${fileItem.file.name}  ${JSON.stringify(error)}`);
+    this.toaster.pop('error', 'Upload failed', `Upload failed for ${fileItem.file.name}`);
+  }
+
+  private onUploadComplete() {
+    const itemsToGallery = this.uploadedFileItems.filter(i => i.fileItem.metadata.addGallery);
+    if (!itemsToGallery || itemsToGallery.length === 0) {
+      return
+    };
+
+    const itemOrders: IItemOrder[] = itemsToGallery.map(i => {
+      return {
+        itemId: i.newItemId,
+        itemOrder: i.fileItem.order
+      }
+    });
+    const galleryType = itemsToGallery[0].fileItem.metadata.selectedGalleryType;
+    this.uploadService.uploadToGalery({
+      galleryType: galleryType,
+      itemId: 0, //TODO
+      itemOrders: itemOrders
+    }).subscribe(
+      () => this.toaster.pop('success', 'Gallery uploaded'),
+      () => this.toaster.pop('error', 'Gallery upload failed'),
+    )
+  }
+
   private fileMetadataOk(metadata: FileItemMetadataModel): boolean {
     return metadata.title &&
       metadata.description &&
@@ -121,4 +186,7 @@ export class FileUploadComponent implements OnInit {
   }
 }
 
-
+interface IUploadedFileItem {
+  fileItem: FileItemModel,
+  newItemId: number
+}

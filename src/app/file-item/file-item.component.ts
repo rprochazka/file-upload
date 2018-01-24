@@ -36,7 +36,7 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
 
   onUseBaseSelectionChanged() {
     this.fileItem.metadata = null;
-    this.fileItem.metadata = this.useBaseSelection ? this.baseSelection : this.baseSelection.clone(this.index);
+    this.fileItem.metadata = this.useBaseSelection ? this.baseSelection : { ...this.baseSelection };
     if (this.useBaseSelection) {
       this.currMatches = this.matches;
     }
@@ -55,6 +55,9 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
     if (changes['matches'] && this.useBaseSelection) {
       this.currMatches = changes['matches'].currentValue;
     }
+    if (changes['index']) {
+      this.fileItem.order = changes['index'].currentValue;
+    }
   }
 
   ngDoCheck() {
@@ -64,7 +67,6 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
       changes.forEachChangedItem(r => {
         this.fileItem.metadata[r.key] = r.currentValue;
       });
-
     }
   }
 
@@ -76,8 +78,6 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
     }
 
     reader.readAsDataURL(this.fileItem.file);
-
-    //this.baseSelection.order = this.index;
   }
 
   onDeleteItem() {

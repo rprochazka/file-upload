@@ -1,8 +1,15 @@
 import { FileItemMetadataModel } from './../file-metadata/fileItemMetadataModel';
 
-export class FileItemModel {
+export interface IFileItemModel {
   metadata: FileItemMetadataModel;
   file: File;
+  order: number;
+}
+
+export class FileItemModel implements IFileItemModel {
+  metadata: FileItemMetadataModel;
+  file: File;
+  order: number;
 
   constructor(file: File) {
     this.file = file;
