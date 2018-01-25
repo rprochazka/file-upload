@@ -32,13 +32,16 @@ export class UploadService {
     //   return Observable.of();
     // }
     // console.log(`FileItem order ${fileItem.order}`);
-    return this.http.post<IUploadFileItemResponse>(this.global.uploadEndpoint, this.mapToFormData(fileItem));
+    return this.http.post<IUploadFileItemResponse>(`${this.apiDomain}/fileItems`, this.mapToFormData(fileItem));
   }
 
   uploadToGalery(uploaderGallery: IUploadGallery): Observable<any> {
-    return this.http.post('api/gallery', uploaderGallery);
+    return this.http.post(`${this.apiDomain}/galleries`, uploaderGallery);
   }
 
+  private get apiDomain() {
+    return this.global.uploadEndpoint === 'TEST' ? 'api/mock' : 'api';
+  }
 
   private mapToFormData(fileItem: FileItemModel): FormData {
     const formData: FormData = new FormData();

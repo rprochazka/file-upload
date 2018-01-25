@@ -8,23 +8,24 @@ import { IUploadFileItemResponse } from './upload.service';
 export class UploaderMockedData implements InMemoryDbService {
 
   createDb() {
-    const fileItems: IFileItemModel[] = [
-
-    ];
+    const fileItems: IFileItemModel[] = [];
     const galleries: string[] = [];
     return { fileItems, galleries };
   }
 
   post(request: RequestInfo): Observable<any> {
-    // console.log(JSON.stringify(request));
-    return request.utils.createResponse$(() => {
-      const randId = Math.floor((Math.random() * 1000) + 1);
-      return randId % 2 === 0
-        ? this.createdResponse({
-          itemId: randId
-        })
-        : this.badRequestResponse()
-    });
+    const collectionName = request.collectionName;
+    if (collectionName === 'fileItems' || collectionName === 'galleries') {
+      return request.utils.createResponse$(() => {
+        const randId = Math.floor((Math.random() * 1000) + 1);
+        return randId % 2 === 0
+          ? this.createdResponse({
+            itemId: randId
+          })
+          : this.badRequestResponse()
+      });
+    }
+    return undefined;
   }
 
   private createdResponse(newItem: IUploadFileItemResponse): ResponseOptions {
