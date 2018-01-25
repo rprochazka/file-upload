@@ -16,16 +16,13 @@ import { SelectListComponent } from './select-list/select-list.component';
 import { CodeListService } from './services/code-list.service';
 import { UploadService } from './services/upload.service';
 
-import { InMemoryWebApiModule, InMemoryBackendConfigArgs } from 'angular-in-memory-web-api';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { UploaderMockedData } from './services/upload-mock.service';
+import { environment } from '../environments/environment';
 
 import { Global } from './global';
 
 import { ToasterModule, ToasterService } from 'angular2-toaster';
-
-const options: InMemoryBackendConfigArgs = {
-  passThruUnknownUrl: true,
-}
 
 @NgModule({
   declarations: [
@@ -43,7 +40,13 @@ const options: InMemoryBackendConfigArgs = {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    InMemoryWebApiModule.forRoot(UploaderMockedData, options),
+    !environment.production
+      ? InMemoryWebApiModule.forRoot(UploaderMockedData, {
+        apiBase: 'api/mock/',
+        passThruUnknownUrl: true
+      })
+      : []
+    ,
     ToasterModule
   ],
   providers: [
