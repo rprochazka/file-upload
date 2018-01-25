@@ -7,11 +7,11 @@ import { Global } from './../global';
 @Injectable()
 export class CodeListService {
 
+  private baseUrl: string;
+
   constructor(private http: HttpClient, private global: Global) {
     this.baseUrl = this.global.dataEndpoint;
   }
-
-  private baseUrl:string;
 
 
   getCategories(): Observable<ICodeList[]> {

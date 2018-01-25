@@ -1,5 +1,5 @@
 import { FileMetadataComponent } from './file-metadata/file-metadata.component';
-import { GlobalErrorHandler } from './shared/globalErrorHandler';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +23,11 @@ import { environment } from '../environments/environment';
 import { Global } from './global';
 
 import { ToasterModule, ToasterService } from 'angular2-toaster';
+
+import { LogPublishersService } from './core/log-publishers.service';
+import { LogService } from './core/log.service';
+import { GlobalErrorHandler } from './core/global-error-handler';
+import { ErrorLogService } from './core/error-log.service';
 
 @NgModule({
   declarations: [
@@ -52,11 +57,14 @@ import { ToasterModule, ToasterService } from 'angular2-toaster';
   providers: [
     CodeListService,
     UploadService,
-    // {
-    //   provide: ErrorHandler,
-    //   useClass: GlobalErrorHandler
-    // },
-    Global
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
+    },
+    Global,
+    LogPublishersService,
+    LogService,
+    ErrorLogService
   ],
   bootstrap: [AppComponent]
 })

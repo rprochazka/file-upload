@@ -9,6 +9,7 @@ import { FileItemModel } from './../file-item/fileItemModel';
 import { ICodeList } from './../models/ICodeList';
 import { CodeListService } from './../services/code-list.service';
 import { Global } from './../global';
+import { LogService } from 'app/core/log.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -29,39 +30,36 @@ export class FileUploadComponent implements OnInit {
 
   private uploadedFileItems: IUploadedFileItem[] = [];
 
+  get uploadUri(): string {
+    return this.global.uploadEndpoint;
+  }
+  get dataUri(): string {
+    return this.global.dataEndpoint;
+  }
+
   constructor(
     private codeListService: CodeListService,
     private uploadService: UploadService,
     private global: Global,
-    private toaster: ToasterService) { }
-
-  public uploadUri: string = this.global.uploadEndpoint;
-  public dataUri: string = this.global.dataEndpoint;
+    private toaster: ToasterService,
+    private logService: LogService) { }
 
   ngOnInit(): void {
-    this.codeListService.getCategories().subscribe(resp => {
-      this.categories = resp;
-    });
-
-    this.codeListService.getSources().subscribe(resp => {
-      this.sources = resp;
-    });
-
-    this.codeListService.getLicenses().subscribe(resp => {
-      this.licenses = resp;
-    });
-
-    this.codeListService.getSeasons().subscribe(resp => {
-      this.seasons = resp;
-    });
-
-    this.codeListService.getTeams().subscribe(resp => {
-      this.teams = resp;
-    });
-
-    this.codeListService.getArticles().subscribe(resp => {
-      this.articles = resp;
-    });
+    Observable.forkJoin(
+      this.codeListService.getCategories(),
+      this.codeListService.getSources(),
+      this.codeListService.getLicenses(),
+      this.codeListService.getSeasons(),
+      this.codeListService.getTeams(),
+      this.codeListService.getArticles()
+    ).subscribe(([categories, sources, licenses, seasons, teams, articles]) => {
+      this.categories = categories;
+      this.sources = sources;
+      this.licenses = licenses;
+      this.seasons = seasons;
+      this.teams = teams;
+      this.articles = articles;
+    })
   }
 
   onNewMatchesLoaded(newMatches: ICodeList[]) {
@@ -150,7 +148,7 @@ export class FileUploadComponent implements OnInit {
   }
 
   private onUploadItemFailed(fileItem: FileItemModel, error: any) {
-    console.log(`Upload failed: ${fileItem.file.name}  ${JSON.stringify(error)}`);
+    this.logService.error(`Upload failed: ${fileItem.file.name}`, error, fileItem.metadata);
     this.toaster.pop('error', 'Upload failed', `Upload failed for ${fileItem.file.name}`);
   }
 
