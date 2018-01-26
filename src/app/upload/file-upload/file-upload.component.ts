@@ -10,6 +10,7 @@ import { CodeListService, ICodeList } from './../services/code-list.service';
 import { Global } from '../../global';
 import { LogService } from 'app/core/log.service';
 import { SelectListItemModel } from 'app/shared/select-list/select-list-item.model';
+import { GalleryTypeEnum } from '../models/gallery-type-enum';
 
 @Component({
   selector: 'app-file-upload',
@@ -130,7 +131,7 @@ export class FileUploadComponent implements OnInit {
 
   canUpload(): boolean {
     if (this.fileItems && this.fileItems.length > 0) {
-      for (let fi of this.fileItems) {
+      for (const fi of this.fileItems) {
         if (!this.fileMetadataOk(fi.metadata)) {
           return false;
         }
@@ -165,9 +166,12 @@ export class FileUploadComponent implements OnInit {
       }
     });
     const galleryType = itemsToGallery[0].fileItem.metadata.selectedGalleryType;
+    const itemId = itemsToGallery[0].fileItem.metadata.selectedGalleryType === GalleryTypeEnum.Article
+      ? itemsToGallery[0].fileItem.metadata.selectedArticle
+      : itemsToGallery[0].fileItem.metadata.selectedMatch;
     this.uploadService.uploadToGalery({
       galleryType: galleryType,
-      itemId: 0, //TODO
+      itemId: itemId,
       itemOrders: itemOrders
     }).subscribe(
       () => this.toaster.pop('success', 'Gallery uploaded'),
