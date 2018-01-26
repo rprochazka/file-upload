@@ -6,10 +6,10 @@ import { ToasterService } from 'angular2-toaster';
 import { UploadService, IUploadGallery, IItemOrder } from './../services/upload.service';
 import { FileItemMetadataModel } from './../file-metadata/fileItemMetadataModel';
 import { FileItemModel } from './../file-item/fileItemModel';
-import { ICodeList } from './../models/ICodeList';
-import { CodeListService } from './../services/code-list.service';
-import { Global } from './../global';
+import { CodeListService, ICodeList } from './../services/code-list.service';
+import { Global } from '../../global';
 import { LogService } from 'app/core/log.service';
+import { SelectListItemModel } from 'app/shared/select-list/select-list-item.model';
 
 @Component({
   selector: 'app-file-upload',
@@ -19,13 +19,13 @@ import { LogService } from 'app/core/log.service';
 export class FileUploadComponent implements OnInit {
 
   fileItems: FileItemModel[] = new Array<FileItemModel>();
-  categories: ICodeList[];
-  sources: ICodeList[];
-  licenses: ICodeList[];
-  seasons: ICodeList[];
-  teams: ICodeList[];
-  matches: ICodeList[];
-  articles: ICodeList[];
+  categories: SelectListItemModel[];
+  sources: SelectListItemModel[];
+  licenses: SelectListItemModel[];
+  seasons: SelectListItemModel[];
+  teams: SelectListItemModel[];
+  matches: SelectListItemModel[];
+  articles: SelectListItemModel[];
   baseMetadata: FileItemMetadataModel = new FileItemMetadataModel();
 
   private uploadedFileItems: IUploadedFileItem[] = [];
@@ -53,12 +53,12 @@ export class FileUploadComponent implements OnInit {
       this.codeListService.getTeams(),
       this.codeListService.getArticles()
     ).subscribe(([categories, sources, licenses, seasons, teams, articles]) => {
-      this.categories = categories;
-      this.sources = sources;
-      this.licenses = licenses;
-      this.seasons = seasons;
-      this.teams = teams;
-      this.articles = articles;
+      this.categories = this.mapCodeListToSelectItem(categories);
+      this.sources = this.mapCodeListToSelectItem(sources);
+      this.licenses = this.mapCodeListToSelectItem(licenses);
+      this.seasons = this.mapCodeListToSelectItem(seasons);
+      this.teams = this.mapCodeListToSelectItem(teams);
+      this.articles = this.mapCodeListToSelectItem(articles);
     })
   }
 
@@ -181,6 +181,10 @@ export class FileUploadComponent implements OnInit {
       metadata.selectedCategory > 0 &&
       metadata.selectedSource > 0 &&
       metadata.selectedLicense > 0;
+  }
+
+  private mapCodeListToSelectItem(codeList: ICodeList[]): SelectListItemModel[] {
+    return codeList.map<ICodeList>(map => map);
   }
 }
 

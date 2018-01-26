@@ -1,25 +1,25 @@
-import { ICodeList } from './../models/ICodeList';
 import { CodeListService } from './../services/code-list.service';
 import { FileItemMetadataModel } from './fileItemMetadataModel';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { MyEnums } from './../shared/selected-gallery-type-enum';
+import { GalleryTypeEnum } from '../models/gallery-type-enum';
+import { SelectListItemModel } from 'app/shared/select-list/select-list-item.model';
 
 @Component({
   selector: 'app-file-metadata',
   templateUrl: './file-metadata.component.html'
 })
 export class FileMetadataComponent {
-  @Input() categories: ICodeList[];
-  @Input() sources: ICodeList[];
-  @Input() licenses: ICodeList[];
-  @Input() seasons: ICodeList[];
-  @Input() teams: ICodeList[];
-  @Input() matches: ICodeList[];
-  @Input() articles: ICodeList[];
+  @Input() categories: SelectListItemModel[];
+  @Input() sources: SelectListItemModel[];
+  @Input() licenses: SelectListItemModel[];
+  @Input() seasons: SelectListItemModel[];
+  @Input() teams: SelectListItemModel[];
+  @Input() matches: SelectListItemModel[];
+  @Input() articles: SelectListItemModel[];
   @Input() baseSelection: FileItemMetadataModel;
   @Input() disabled: boolean;
   @Input() index: number;
-  @Output() newMatchesLoaded: EventEmitter<ICodeList[]> = new EventEmitter<ICodeList[]>();
+  @Output() newMatchesLoaded: EventEmitter<SelectListItemModel[]> = new EventEmitter<SelectListItemModel[]>();
 
   constructor(private codeListService: CodeListService) { }
 
@@ -37,17 +37,17 @@ export class FileMetadataComponent {
 
   galleryTypeChange(type: string): void {
     if (type === 'match') {
-      this.baseSelection.selectedGalleryType = MyEnums.SelectedGalleryTypeEnum.Match;
+      this.baseSelection.selectedGalleryType = GalleryTypeEnum.Match;
     } else {
-      this.baseSelection.selectedGalleryType = MyEnums.SelectedGalleryTypeEnum.Article;
+      this.baseSelection.selectedGalleryType = GalleryTypeEnum.Article;
     }
   }
 
   showMatchGalleryProperties(): boolean {
-    return this.baseSelection.addGallery && this.baseSelection.selectedGalleryType === MyEnums.SelectedGalleryTypeEnum.Match;
+    return this.baseSelection.addGallery && this.baseSelection.selectedGalleryType === GalleryTypeEnum.Match;
   }
 
   showArticleGalleryProperties(): boolean {
-    return this.baseSelection.addGallery && this.baseSelection.selectedGalleryType === MyEnums.SelectedGalleryTypeEnum.Article;
+    return this.baseSelection.addGallery && this.baseSelection.selectedGalleryType === GalleryTypeEnum.Article;
   }
 }

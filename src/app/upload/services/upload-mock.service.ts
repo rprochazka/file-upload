@@ -1,7 +1,7 @@
 import { InMemoryDbService, RequestInfo, ResponseOptions } from 'angular-in-memory-web-api';
 import { Observable } from 'rxjs/Observable';
 
-import { IFileItemModel } from 'app/file-item/fileItemModel';
+import { IFileItemModel } from '../file-item/fileItemModel';
 
 import { IUploadFileItemResponse } from './upload.service';
 

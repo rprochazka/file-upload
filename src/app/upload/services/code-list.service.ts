@@ -1,8 +1,8 @@
-import { ICodeList } from './../models/ICodeList';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
 import { HttpClient } from '@angular/common/http';
-import { Global } from './../global';
+
+import { Observable } from 'rxjs/Observable';
+import { Global } from '../../global';
 
 @Injectable()
 export class CodeListService {
@@ -48,4 +48,10 @@ export class CodeListService {
     const url = `${this.baseUrl}/GetArticles`;
     return this.http.get<ICodeList[]>(url).map(resp => resp);
   }
+}
+
+
+export interface ICodeList {
+  id: number;
+  value: string;
 }

@@ -1,8 +1,7 @@
 import { Component, Input, Output, forwardRef, ElementRef, Renderer, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
-import { ICodeList } from '../models/ICodeList';
-import { SelectListItemModel } from './select-list.-item.model';
+import { SelectListItemModel } from './select-list-item.model';
 
 @Component({
   selector: 'app-select-list',
@@ -18,7 +17,7 @@ import { SelectListItemModel } from './select-list.-item.model';
 export class SelectListComponent implements ControlValueAccessor {
 
   @Input() label: string;
-  @Input() items: ICodeList[];
+  @Input() items: SelectListItemModel[];
   @Input() disabled: boolean;
   @Output() selectionChanged: EventEmitter<any> = new EventEmitter<any>();
 

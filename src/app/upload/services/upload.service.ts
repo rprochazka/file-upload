@@ -2,9 +2,9 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Global } from './../global';
-import { FileItemModel } from 'app/file-item/fileItemModel';
-import { MyEnums } from 'app/shared/selected-gallery-type-enum';
+import { Global } from '../../global';
+import { FileItemModel } from '../file-item/fileItemModel';
+import { GalleryTypeEnum } from '../models/gallery-type-enum';
 
 export interface IUploadFileItemResponse {
   itemId: number;
@@ -16,7 +16,7 @@ export interface IItemOrder {
 }
 
 export interface IUploadGallery {
-  galleryType: MyEnums.SelectedGalleryTypeEnum,
+  galleryType: GalleryTypeEnum,
   itemId: number,
   itemOrders: IItemOrder[]
 }

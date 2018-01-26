@@ -1,7 +1,7 @@
 import { FileItemMetadataModel } from './../file-metadata/fileItemMetadataModel';
 import { FileItemModel } from './fileItemModel';
-import { ICodeList } from './../models/ICodeList';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, DoCheck, KeyValueDiffers, Output, EventEmitter } from '@angular/core';
+import { SelectListItemModel } from 'app/shared/select-list/select-list-item.model';
 
 @Component({
   selector: 'app-file-item',
@@ -11,13 +11,13 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, DoCheck, KeyValueDi
 export class FileItemComponent implements OnInit, OnChanges, DoCheck {
 
   @Input() fileItem: FileItemModel;
-  @Input() categories: ICodeList[];
-  @Input() sources: ICodeList[];
-  @Input() licenses: ICodeList[];
-  @Input() seasons: ICodeList[];
-  @Input() teams: ICodeList[];
-  @Input() matches: ICodeList[];
-  @Input() articles: ICodeList[];
+  @Input() categories: SelectListItemModel[];
+  @Input() sources: SelectListItemModel[];
+  @Input() licenses: SelectListItemModel[];
+  @Input() seasons: SelectListItemModel[];
+  @Input() teams: SelectListItemModel[];
+  @Input() matches: SelectListItemModel[];
+  @Input() articles: SelectListItemModel[];
   @Input() index: number;
 
   @Input() private baseSelection: FileItemMetadataModel;
@@ -26,7 +26,7 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
 
   url: string;
   useBaseSelection: boolean;
-  currMatches: ICodeList[];
+  currMatches: SelectListItemModel[];
   private differ: any;
 
   constructor(private differs: KeyValueDiffers) {
@@ -42,7 +42,7 @@ export class FileItemComponent implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  onNewMatchesLoaded(newMatches: ICodeList[]) {
+  onNewMatchesLoaded(newMatches: SelectListItemModel[]) {
     if (!this.useBaseSelection) {
       this.currMatches = newMatches;
     }
