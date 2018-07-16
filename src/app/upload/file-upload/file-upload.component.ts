@@ -81,31 +81,6 @@ export class FileUploadComponent implements OnInit {
   }
 
   onUpload() {
-    // const tasks$ = this.fileItems.map(fileItem => {
-    //   return this.uploadService.uploadFileItem(fileItem)
-    //     .map(resp => {
-    //       this.onUploadItemSuccess(fileItem, resp.itemId);
-    //       return <IUploadedFileItem>{
-    //         fileItem: fileItem,
-    //         newItemId: resp.itemId
-    //       }
-    //     })
-    //     .catch(error => {
-    //       this.onUploadItemFailed(fileItem, error);
-    //       return Observable.empty();
-    //     })
-    //   //.filter((uploadedItem: IUploadedFileItem) => uploadedItem !== null)
-    // });
-    // Observable.forkJoin(tasks$).subscribe(
-    //   (uploadedItems: IUploadedFileItem[]) => {
-    //     debugger
-    //     this.onUploadComplete(uploadedItems)
-    //   },
-    //   (error) => console.log('Error ' + error),
-    //   (() => console.log('Complete'))
-    // );
-
-
     this.uploadedFileItems = [];
     Observable.from(this.fileItems)
       .mergeMap(fileItem => {
@@ -161,7 +136,7 @@ export class FileUploadComponent implements OnInit {
 
     const itemOrders: IItemOrder[] = itemsToGallery.map(i => {
       return {
-        itemId: i.newItemId,
+        itemValue: i.newItemId,
         itemOrder: i.fileItem.order
       }
     });

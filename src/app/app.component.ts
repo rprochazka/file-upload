@@ -10,8 +10,8 @@ export class AppComponent {
   title = 'app';
 
   constructor(private elementRef: ElementRef, private global: Global) {
-    const uploadUri = this.elementRef.nativeElement.getAttribute('uploadUri');
-    const dataUri = this.elementRef.nativeElement.getAttribute('dataUri');
+    const uploadUri = elementRef.nativeElement.getAttribute('uploadUri');
+    const dataUri = elementRef.nativeElement.getAttribute('dataUri');
     if (uploadUri) {
       this.global.uploadEndpoint = uploadUri;
     }

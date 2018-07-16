@@ -11,7 +11,7 @@ export interface IUploadFileItemResponse {
 }
 
 export interface IItemOrder {
-  itemId: number,
+  itemValue: number,
   itemOrder: number;
 }
 
@@ -27,20 +27,17 @@ export class UploadService {
   constructor(private http: HttpClient, private global: Global) { }
 
   uploadFileItem(fileItem: FileItemModel): Observable<IUploadFileItemResponse> {
-    // if (this.global.uploadEndpoint === 'TEST') {
-    //   console.log(JSON.stringify(fileItem));
-    //   return Observable.of();
-    // }
-    // console.log(`FileItem order ${fileItem.order}`);
-    return this.http.post<IUploadFileItemResponse>(`${this.apiDomain}/fileItems`, this.mapToFormData(fileItem));
+    console.log(`Uploading to: ${this.global.uploadEndpoint}/images`);
+    return this.http.post<IUploadFileItemResponse>(`${this.global.uploadEndpoint}/images`, this.mapToFormData(fileItem));
   }
 
   uploadToGalery(uploaderGallery: IUploadGallery): Observable<any> {
-    return this.http.post(`${this.apiDomain}/galleries`, uploaderGallery);
+    console.log(`Uploading to: ${this.global.uploadEndpoint}/galleries`);
+    return this.http.post(`${this.global.uploadEndpoint}/galleries`, uploaderGallery);
   }
 
   private get apiDomain() {
-    return this.global.uploadEndpoint === 'TEST' ? 'api/mock' : 'api';
+    return this.global.uploadEndpoint === 'TEST' ? 'api/mock/fileItems' : this.global.uploadEndpoint;
   }
 
   private mapToFormData(fileItem: FileItemModel): FormData {

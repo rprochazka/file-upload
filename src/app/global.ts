@@ -1,4 +1,4 @@
 export class Global {
-  public uploadEndpoint = 'TEST';
-  public dataEndpoint = 'https://www.bohemians.cz/api/uploader';
+  public uploadEndpoint = 'https://www.fcbdev.cz/api/uploader';
+  public dataEndpoint = 'https://www.fcbdev.cz/api/uploader';
 }
