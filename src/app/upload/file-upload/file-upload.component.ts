@@ -83,7 +83,7 @@ export class FileUploadComponent implements OnInit {
   onUpload() {
     this.uploadedFileItems = [];
     Observable.from(this.fileItems)
-      .mergeMap(fileItem => {
+      .concatMap(fileItem => {
         return this.uploadService.uploadFileItem(fileItem)
           .map(resp => {
             return <IUploadedFileItem>{
@@ -119,7 +119,7 @@ export class FileUploadComponent implements OnInit {
 
   private onUploadItemSuccess(fileItem: FileItemModel, newItemId: number) {
     this.toaster.pop('success', 'File uploaded', `File uploaded: ${fileItem.file.name}`);
-    const uploadedItem = this.fileItems.splice(this.fileItems.findIndex(i => i.order !== fileItem.order), 1);
+    //const uploadedItem = this.fileItems.splice(this.fileItems.findIndex(i => i.order !== fileItem.order), 1);
     this.uploadedFileItems.push({ fileItem: fileItem, newItemId: newItemId });
   }
 
@@ -131,13 +131,14 @@ export class FileUploadComponent implements OnInit {
   private onUploadComplete() {
     const itemsToGallery = this.uploadedFileItems.filter(i => i.fileItem.metadata.addGallery);
     if (!itemsToGallery || itemsToGallery.length === 0) {
+      this.fileItems = [];
       return
     };
 
     const itemOrders: IItemOrder[] = itemsToGallery.map(i => {
       return {
         itemValue: i.newItemId,
-        itemOrder: i.fileItem.order
+        itemOrder: i.fileItem.order + 1
       }
     });
     const galleryType = itemsToGallery[0].fileItem.metadata.selectedGalleryType;
@@ -152,6 +153,8 @@ export class FileUploadComponent implements OnInit {
       () => this.toaster.pop('success', 'Gallery uploaded'),
       () => this.toaster.pop('error', 'Gallery upload failed'),
     )
+
+    this.fileItems = [];
   }
 
   private fileMetadataOk(metadata: FileItemMetadataModel): boolean {
