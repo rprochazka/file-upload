@@ -98,9 +98,9 @@ export class FileUploadComponent implements OnInit {
 
       })
       .subscribe(
-      ((uploadedItem: IUploadedFileItem) => this.onUploadItemSuccess(uploadedItem.fileItem, uploadedItem.newItemId)),
-      (error => console.log('Error', error)),
-      (() => this.onUploadComplete())
+        ((uploadedItem: IUploadedFileItem) => this.onUploadItemSuccess(uploadedItem.fileItem, uploadedItem.newItemId)),
+        (error => console.log('Error', error)),
+        (() => this.onUploadComplete())
       );
   }
 
@@ -119,7 +119,7 @@ export class FileUploadComponent implements OnInit {
 
   private onUploadItemSuccess(fileItem: FileItemModel, newItemId: number) {
     this.toaster.pop('success', 'File uploaded', `File uploaded: ${fileItem.file.name}`);
-    //const uploadedItem = this.fileItems.splice(this.fileItems.findIndex(i => i.order !== fileItem.order), 1);
+    fileItem.uploaded = true;
     this.uploadedFileItems.push({ fileItem: fileItem, newItemId: newItemId });
   }
 
@@ -131,7 +131,8 @@ export class FileUploadComponent implements OnInit {
   private onUploadComplete() {
     const itemsToGallery = this.uploadedFileItems.filter(i => i.fileItem.metadata.addGallery);
     if (!itemsToGallery || itemsToGallery.length === 0) {
-      this.fileItems = [];
+      // keeps just those that failed upload
+      this.fileItems = this.fileItems.filter(i => !i.uploaded);
       return
     };
 
@@ -150,11 +151,12 @@ export class FileUploadComponent implements OnInit {
       itemId: itemId,
       itemOrders: itemOrders
     }).subscribe(
-      () => this.toaster.pop('success', 'Gallery uploaded'),
+      () => {
+        this.fileItems = [];
+        this.toaster.pop('success', 'Gallery uploaded');
+      },
       () => this.toaster.pop('error', 'Gallery upload failed'),
     )
-
-    this.fileItems = [];
   }
 
   private fileMetadataOk(metadata: FileItemMetadataModel): boolean {

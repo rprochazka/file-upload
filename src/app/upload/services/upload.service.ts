@@ -27,13 +27,19 @@ export class UploadService {
   constructor(private http: HttpClient, private global: Global) { }
 
   uploadFileItem(fileItem: FileItemModel): Observable<IUploadFileItemResponse> {
-    console.log(`Uploading to: ${this.global.uploadEndpoint}/images`);
-    return this.http.post<IUploadFileItemResponse>(`${this.global.uploadEndpoint}/images`, this.mapToFormData(fileItem));
+    console.log(`Uploading to: ${this.global.uploadEndpoint}/images`, fileItem);
+    return Observable.of({
+      itemId: Math.random()
+    } as IUploadFileItemResponse).delay(5000);
+    // return this.http.post<IUploadFileItemResponse>(`${this.global.uploadEndpoint}/images`, this.mapToFormData(fileItem));
   }
 
   uploadToGalery(uploaderGallery: IUploadGallery): Observable<any> {
-    console.log(`Uploading to: ${this.global.uploadEndpoint}/galleries`);
-    return this.http.post(`${this.global.uploadEndpoint}/galleries`, uploaderGallery);
+    console.log(`Uploading to: ${this.global.uploadEndpoint}/galleries`, uploaderGallery);
+    return Observable.of({
+      itemId: Math.random()
+    });
+    // return this.http.post(`${this.global.uploadEndpoint}/galleries`, uploaderGallery);
   }
 
   private get apiDomain() {
